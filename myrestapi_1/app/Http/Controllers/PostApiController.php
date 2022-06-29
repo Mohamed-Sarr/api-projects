@@ -31,10 +31,12 @@ class PostApiController extends Controller
             'content' => 'required'
         ]);
 
-        return Post::create([
+        $post = Post::create([
             'title'=> request('title'),
             'content'=> request('content'),
         ]);
+        
+        return response($post);
 
     }
 

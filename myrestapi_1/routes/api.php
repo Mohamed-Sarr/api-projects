@@ -17,24 +17,28 @@ use App\Http\Controllers\PostApiController;
 |
 */
 
-
-Route::post('/register', [ApiAuthController::class,'register']);
-Route::post('/logout', [ApiAuthController::class,'logout']);
-
-
-
-
+// Default Middleware route
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    Route::post('/posts', [PostApiController::class,'store']);
-    Route::put('/posts/{post}', [PostApiController::class,'update']);
-    Route::delete('/posts/{post}', [PostApiController::class,'destroy']);
-    // return $request->user();
-    
+    return $request->user(); 
 });
 
-Route::get('/posts/search/{name}', [PostApiController::class,'search']);
 
+// Auth Routes
+Route::post('/register', [ApiAuthController::class,'register']);
+Route::post('/login', [ApiAuthController::class,'login']);
+
+
+// Public Routes
+Route::get('/posts/search/{name}', [PostApiController::class,'search']);
 Route::get('/posts', [PostApiController::class,'index']);
 Route::get('/posts/{post}', [PostApiController::class,'show']);
 
+
+// Protected Routes
+Route::group(['middleware'=>['auth:sanctum']],function(){
+    Route::post('/logout', [ApiAuthController::class,'logout']);
+    Route::post('/post', [PostApiController::class,'store']);
+    Route::put('/posts/{post}', [PostApiController::class,'update']);
+    Route::delete('/posts/{post}', [PostApiController::class,'destroy']);
+});
 
