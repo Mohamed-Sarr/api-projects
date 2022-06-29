@@ -101,8 +101,7 @@ class PostController extends Controller
             // $post = Post::where('title','like','%'.$name.'%')->get();
             return Post::where('title','like','%'.$name.'%')->get();
 
-        
-
+    
 
     }
 
